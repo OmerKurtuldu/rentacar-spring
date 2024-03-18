@@ -1,6 +1,11 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.FuelService;
+import com.turkcell.rentacar.business.dtos.requests.CreatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
 import com.turkcell.rentacar.entities.concretes.Brand;
 import com.turkcell.rentacar.entities.concretes.Fuel;
 import lombok.AllArgsConstructor;
@@ -17,25 +22,25 @@ public class FuelsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Fuel add(@RequestBody Fuel fuel) {
-        return fuelService.add(fuel);
+    public CreatedFuelResponse add(@RequestBody CreatedFuelRequest createdFuelRequest) {
+        return fuelService.add(createdFuelRequest);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Fuel update(@RequestBody Fuel fuel) {
-        return fuelService.update(fuel);
+    public UpdatedFuelResponse update(@RequestBody UpdatedFuelRequest updatedFuelRequest) {
+        return fuelService.update(updatedFuelRequest);
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Fuel getById(@PathVariable int id) {
+    public GetFuelResponse getById(@PathVariable int id) {
         return fuelService.getById(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Fuel> getAll() {
+    public List<GetFuelResponse> getAll() {
         return fuelService.getAll();
     }
 

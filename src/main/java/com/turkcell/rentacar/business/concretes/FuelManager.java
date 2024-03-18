@@ -2,12 +2,21 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.FuelService;
 
+import com.turkcell.rentacar.business.dtos.requests.CreatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
+import com.turkcell.rentacar.business.rules.FuelBusinessRules;
+import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
 import com.turkcell.rentacar.entities.concretes.Fuel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -15,18 +24,36 @@ import java.util.List;
 public class FuelManager implements FuelService {
     private FuelRepository fuelRepository;
 
+    private ModelMapperManager modelMapperService;
+
+    private FuelBusinessRules fuelBusinessRules;
+
     @Override
-    public Fuel add(Fuel fuel) {
-        Fuel createdFuel = fuelRepository.save(fuel);
-        return createdFuel;
+    public CreatedFuelResponse add(CreatedFuelRequest createdFuelRequest) {
+        fuelBusinessRules.fuelNameCanNotBeDuplicated(createdFuelRequest.getName());
+        Fuel createdFuel = this.modelMapperService.forRequest().map(createdFuelRequest, Fuel.class);
+        createdFuel.setCreatedDate(LocalDateTime.now());
+        fuelRepository.save(createdFuel);
+
+        CreatedFuelResponse createdFuelResponse = this.modelMapperService.forResponse()
+                .map(createdFuel, CreatedFuelResponse.class);
+        return createdFuelResponse;
     }
 
     @Override
-    public Fuel update(Fuel fuel) {
-        Fuel existingFuel = fuelRepository.findById(fuel.getId()).orElse(null);
-        existingFuel.setName(fuel.getName());
+    public UpdatedFuelResponse update(UpdatedFuelRequest updatedFuelRequest) {
+        fuelBusinessRules.fuelNameCanNotBeDuplicated(updatedFuelRequest.getName());
+        Fuel existingFuel = fuelRepository.findById(updatedFuelRequest.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Fuel not found with id: " + updatedFuelRequest.getId()));
+
+        this.modelMapperService.forRequest().map(updatedFuelRequest, existingFuel);
         existingFuel.setUpdatedDate(LocalDateTime.now());
-        return fuelRepository.save(existingFuel);
+        Fuel updatedFuel = fuelRepository.save(existingFuel);
+
+        UpdatedFuelResponse updatedFuelResponse =
+                this.modelMapperService.forResponse().map(updatedFuel, UpdatedFuelResponse.class);
+
+        return updatedFuelResponse;
     }
 
     @Override
@@ -35,13 +62,23 @@ public class FuelManager implements FuelService {
     }
 
     @Override
-    public List<Fuel> getAll() {
-        List<Fuel> getAllFuel = fuelRepository.findAll();
-        return getAllFuel;
+    public List<GetFuelResponse> getAll() {
+        List<GetFuelResponse> getFuelResponses = new ArrayList<>();
+        List<Fuel> fuels = fuelRepository.findAll();
+        for (Fuel fuel : fuels) {
+            GetFuelResponse fuelResponse =
+                    this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
+            getFuelResponses.add(fuelResponse);
+        }
+        return getFuelResponses;
     }
 
     @Override
-    public Fuel getById(int id) {
-        return fuelRepository.findById(id).orElse(null);
+    public GetFuelResponse getById(int id) {
+        Fuel fuel = fuelRepository.findById(id).
+                orElseThrow(() -> new IllegalArgumentException("Fuel not foun with id: " + id));
+        GetFuelResponse getFuelResponse =
+                this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
+        return getFuelResponse;
     }
 }
