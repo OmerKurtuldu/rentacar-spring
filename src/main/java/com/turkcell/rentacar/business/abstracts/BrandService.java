@@ -1,19 +1,24 @@
 package com.turkcell.rentacar.business.abstracts;
 
+import com.turkcell.rentacar.business.dtos.requests.CreatedBrandRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedBrandRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
 import com.turkcell.rentacar.entities.concretes.Brand;
 
 import java.util.List;
 
 public interface BrandService {
-    Brand add(Brand brand);
+    CreatedBrandResponse add(CreatedBrandRequest createBrandRequest);
 
-    Brand update(Brand brand);
+    UpdatedBrandResponse update(UpdatedBrandRequest updatedBrandRequest);
 
     void delete(int id);
 
-    Brand getById(int id);
+    GetBrandResponse getById(int id);
 
-    List<Brand> getAll();
+    List<GetBrandResponse> getAll();
 
 }
 
