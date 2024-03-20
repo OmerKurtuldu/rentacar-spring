@@ -62,23 +62,23 @@ public class FuelManager implements FuelService {
     }
 
     @Override
-    public List<GetFuelResponse> getAll() {
-        List<GetFuelResponse> getFuelResponses = new ArrayList<>();
-        List<Fuel> fuels = fuelRepository.findAll();
-        for (Fuel fuel : fuels) {
-            GetFuelResponse fuelResponse =
-                    this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
-            getFuelResponses.add(fuelResponse);
-        }
-        return getFuelResponses;
-    }
-
-    @Override
     public GetFuelResponse getById(int id) {
         Fuel fuel = fuelRepository.findById(id).
                 orElseThrow(() -> new IllegalArgumentException("Fuel not foun with id: " + id));
         GetFuelResponse getFuelResponse =
                 this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
         return getFuelResponse;
+    }
+
+    @Override
+    public List<GetFuelResponse> getAll() {
+        List<GetFuelResponse> fuelResponses = new ArrayList<>();
+        List<Fuel> fuels = fuelRepository.findAll();
+        for (Fuel fuel : fuels) {
+            GetFuelResponse fuelResponse =
+                    this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
+            fuelResponses.add(fuelResponse);
+        }
+        return fuelResponses;
     }
 }

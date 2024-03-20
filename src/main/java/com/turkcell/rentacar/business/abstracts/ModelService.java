@@ -1,17 +1,22 @@
 package com.turkcell.rentacar.business.abstracts;
 
+import com.turkcell.rentacar.business.dtos.requests.CreatedModelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedModelRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
 import com.turkcell.rentacar.entities.concretes.Model;
 
 import java.util.List;
 
 public interface ModelService {
-    Model add(Model model);
+    CreatedModelResponse add(CreatedModelRequest createdModelRequest);
 
-    Model update(Model model);
+    UpdatedModelResponse update(UpdatedModelRequest updatedModelRequest);
 
     void delete(int id);
 
-    List<Model> getAll();
+    List<GetModelResponse> getAll();
 
-    Model getById(int id);
+    GetModelResponse getById(int id);
 }

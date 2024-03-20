@@ -1,7 +1,13 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.TransmissionService;
+import com.turkcell.rentacar.business.dtos.requests.CreatedTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
 import com.turkcell.rentacar.entities.concretes.Transmission;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +22,14 @@ public class TransmissionsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Transmission add(@RequestBody Transmission transmission) {
-        return transmissionService.add(transmission);
+    public CreatedTransmissionResponse add(@Valid @RequestBody CreatedTransmissionRequest createdTransmissionRequest) {
+        return transmissionService.add(createdTransmissionRequest);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Transmission update(@RequestBody Transmission transmission) {
-        return transmissionService.update(transmission);
+    public UpdatedTransmissionResponse update(@RequestBody UpdatedTransmissionRequest updatedTransmissionRequest) {
+        return transmissionService.update(updatedTransmissionRequest);
     }
 
     @DeleteMapping("/{id}")
@@ -34,13 +40,13 @@ public class TransmissionsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Transmission> getAll() {
+    public List<GetTransmissionResponse> getAll() {
         return transmissionService.getAll();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Transmission getById(@PathVariable int id) {
+    public GetTransmissionResponse getById(@PathVariable int id) {
         return transmissionService.getById(id);
     }
 }

@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UpdatedFuelRequest {
-    @NotNull(message = "Id field cannot be bull")
+    @NotNull
     private int id;
-    @NotNull(message = "Name field cannot be bull")
+    @NotNull
+    @Size(min = 2, max = 30)
     private String name;
 }

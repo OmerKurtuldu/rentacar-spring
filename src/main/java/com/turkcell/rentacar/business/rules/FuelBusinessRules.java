@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.rules;
 
+import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
 import com.turkcell.rentacar.entities.concretes.Fuel;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ public class FuelBusinessRules {
     public void fuelNameCanNotBeDuplicated(String fuelName){
         Optional<Fuel> fuel = fuelRepository.findByNameIgnoreCase(fuelName);
         if(fuel.isPresent()){
-            throw new RuntimeException("Fuel already exists!");
+            throw new BusinessException("Fuel already exists!");
         }
 
     }

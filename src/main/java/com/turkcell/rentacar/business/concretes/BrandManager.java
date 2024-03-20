@@ -70,13 +70,13 @@ public class BrandManager implements BrandService {
 
     @Override
     public List<GetBrandResponse> getAll() {
-        List<GetBrandResponse> getBrandResponses = new ArrayList<>();
+        List<GetBrandResponse> brandResponses = new ArrayList<>();
         List<Brand> brands = brandRepository.findAll();
         for (Brand brand : brands) {
             GetBrandResponse brandResponse =
                     this.modelMapperService.forResponse().map(brand, GetBrandResponse.class);
-            getBrandResponses.add(brandResponse);
+            brandResponses.add(brandResponse);
         }
-        return getBrandResponses;
+        return brandResponses;
     }
 }

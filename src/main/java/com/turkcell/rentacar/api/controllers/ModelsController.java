@@ -2,6 +2,11 @@ package com.turkcell.rentacar.api.controllers;
 
 
 import com.turkcell.rentacar.business.abstracts.ModelService;
+import com.turkcell.rentacar.business.dtos.requests.CreatedModelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedModelRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
 import com.turkcell.rentacar.entities.concretes.Model;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,14 +22,14 @@ public class ModelsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Model add(@RequestBody Model model) {
-        return modelService.add(model);
+    public CreatedModelResponse add(@RequestBody CreatedModelRequest createdModelRequest) {
+        return modelService.add(createdModelRequest);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public Model update(@RequestBody Model model) {
-        return modelService.update(model);
+    public UpdatedModelResponse update(@RequestBody UpdatedModelRequest updatedModelRequest) {
+        return modelService.update(updatedModelRequest);
     }
 
     @DeleteMapping("/{id}")
@@ -33,16 +38,16 @@ public class ModelsController {
         modelService.delete(id);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<Model> getAll() {
-        return modelService.getAll();
-    }
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Model getById(int id) {
+    public GetModelResponse getById(int id) {
         return modelService.getById(id);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetModelResponse> getAll() {
+        return modelService.getAll();
     }
 
 }

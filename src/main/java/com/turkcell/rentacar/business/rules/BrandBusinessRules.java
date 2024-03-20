@@ -16,7 +16,7 @@ public class BrandBusinessRules {
     public void brandNameCanNotBeDuplicated(String brandName) {
         Optional<Brand> brand = brandRepository.findByNameIgnoreCase(brandName);
         if (brand.isPresent()) {
-            throw new BusinessException("BrandExists");
+            throw new BusinessException("Brand already exists");
         }
     }
 

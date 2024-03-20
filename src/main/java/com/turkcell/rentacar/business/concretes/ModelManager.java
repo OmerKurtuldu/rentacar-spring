@@ -1,29 +1,52 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.ModelService;
+import com.turkcell.rentacar.business.dtos.requests.CreatedModelRequest;
+import com.turkcell.rentacar.business.dtos.requests.UpdatedModelRequest;
+import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
+import com.turkcell.rentacar.business.rules.ModelBusinessRules;
+import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
 import com.turkcell.rentacar.entities.concretes.Model;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class ModelManager implements ModelService {
     ModelRepository modelRepository;
+    ModelMapperManager modelMapperService;
+    ModelBusinessRules modelBusinessRules;
 
     @Override
-    public Model add(Model model) {
-        Model createdModel = modelRepository.save(model);
-        return createdModel;
+    public CreatedModelResponse add(CreatedModelRequest createdModelRequest) {
+        modelBusinessRules.modelNameCanNotBeDuplicated(createdModelRequest.getName());
+
+        Model createdModel = this.modelMapperService.forRequest().map(createdModelRequest, Model.class);
+        createdModel.setCreatedDate(LocalDateTime.now());
+        modelRepository.save(createdModel);
+
+        CreatedModelResponse createdModelResponse = this.modelMapperService.forResponse().map(createdModel, CreatedModelResponse.class);
+        return createdModelResponse;
     }
 
     @Override
-    public Model update(Model model) {
-        Model existingModel = modelRepository.findById(model.getId()).orElse(null);
-        existingModel.setName(model.getName());
-        return modelRepository.save(existingModel);
+    public UpdatedModelResponse update(UpdatedModelRequest updatedModelRequest) {
+        modelBusinessRules.modelNameCanNotBeDuplicated(updatedModelRequest.getName());
+        Model existingModel = modelMapperService.forRequest().map(updatedModelRequest, Model.class);
+        existingModel.setUpdatedDate(LocalDateTime.now());
+        Model updatedModel = modelRepository.save(existingModel);
+
+        UpdatedModelResponse updatedModelResponse = modelMapperService.forResponse().map(updatedModel, UpdatedModelResponse.class);
+        return updatedModelResponse;
     }
 
     @Override
@@ -32,13 +55,21 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public List<Model> getAll() {
-        List<Model> getAllModel = modelRepository.findAll();
-        return getAllModel;
+    public GetModelResponse getById(int id) {
+        Model model = modelRepository.findById(id).orElse(null);
+        GetModelResponse getModelResponse = this.modelMapperService.forResponse().map(model, GetModelResponse.class);
+        return getModelResponse;
     }
 
     @Override
-    public Model getById(int id) {
-        return modelRepository.findById(id).orElse(null);
+    public List<GetModelResponse> getAll() {
+        List<GetModelResponse> modelResponses = new ArrayList<>();
+        List<Model> models = modelRepository.findAll();
+        for (Model model : models) {
+            GetModelResponse modelResponse =
+                    this.modelMapperService.forResponse().map(model, GetModelResponse.class);
+            modelResponses.add(modelResponse);
+        }
+        return modelResponses;
     }
 }
