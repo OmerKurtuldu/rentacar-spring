@@ -7,6 +7,7 @@ import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
 import com.turkcell.rentacar.entities.concretes.Brand;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class BrandsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedBrandResponse add(@RequestBody CreatedBrandRequest createBrandRequest) {
+    public CreatedBrandResponse add(@Valid @RequestBody CreatedBrandRequest createBrandRequest) {
         return brandService.add(createBrandRequest);
     }
 

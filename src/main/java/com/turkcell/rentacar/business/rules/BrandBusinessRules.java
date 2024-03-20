@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.rules;
 
+import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandRepository;
 import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ public class BrandBusinessRules {
     public void brandNameCanNotBeDuplicated(String brandName) {
         Optional<Brand> brand = brandRepository.findByNameIgnoreCase(brandName);
         if (brand.isPresent()) {
-            throw new RuntimeException("BrandExists");
+            throw new BusinessException("BrandExists");
         }
     }
 

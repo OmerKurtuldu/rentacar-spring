@@ -28,6 +28,7 @@ public class BrandManager implements BrandService {
 
     @Override
     public CreatedBrandResponse add(CreatedBrandRequest createBrandRequest) {
+
         brandBussinessRules.brandNameCanNotBeDuplicated(createBrandRequest.getName());
         Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
         brand.setCreatedDate(LocalDateTime.now());
