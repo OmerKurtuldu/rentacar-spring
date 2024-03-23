@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
-@Service
+@Service   //101
 public class BrandManager implements BrandService {
     private BrandRepository brandRepository;
 

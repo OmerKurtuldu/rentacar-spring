@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("api/v1/brands")
 public class BrandsController {
-    private BrandService brandService; //IoC
+    private BrandService brandService; //101
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
