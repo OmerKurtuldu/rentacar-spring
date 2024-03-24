@@ -19,6 +19,7 @@ public class Maintenance extends BaseEntity {
 
     @Column(name = "dateSent")
     private LocalDateTime dateSend;
+
     @Column(name = "dateReturn")
     private LocalDateTime dateReturn;
 

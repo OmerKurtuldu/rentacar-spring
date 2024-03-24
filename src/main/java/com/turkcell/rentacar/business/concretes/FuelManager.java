@@ -2,12 +2,11 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.FuelService;
 
-import com.turkcell.rentacar.business.dtos.requests.CreatedFuelRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdatedFuelRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.requests.update.UpdatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.responses.create.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.get.GetFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.update.UpdatedFuelResponse;
 import com.turkcell.rentacar.business.rules.FuelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;

@@ -1,12 +1,11 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.BrandService;
-import com.turkcell.rentacar.business.dtos.requests.CreatedBrandRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdatedBrandRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetBrandResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedBrandResponse;
-import com.turkcell.rentacar.entities.concretes.Brand;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedBrandRequest;
+import com.turkcell.rentacar.business.dtos.requests.update.UpdatedBrandRequest;
+import com.turkcell.rentacar.business.dtos.responses.create.CreatedBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.get.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.update.UpdatedBrandResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

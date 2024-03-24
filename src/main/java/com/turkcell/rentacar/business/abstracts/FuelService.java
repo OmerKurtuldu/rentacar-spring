@@ -1,10 +1,10 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.dtos.requests.CreatedFuelRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdatedFuelRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.requests.update.UpdatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.responses.create.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.get.GetFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.update.UpdatedFuelResponse;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.entities.concretes;
 
 import com.turkcell.rentacar.core.entities.BaseEntity;
+import com.turkcell.rentacar.entities.enums.CarState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Car extends BaseEntity {
     private String plate;
 
     @Column(name = "state")
-    private int state;
+    private CarState state;
 
     @Column(name = "dailyPrice")
     private double dailyPrice;
@@ -33,5 +34,8 @@ public class Car extends BaseEntity {
 
     @OneToMany(mappedBy = "car")
     List<Maintenance> maintenances;
+
+    @OneToMany(mappedBy = "car")
+    private List<Rental> rentals;
 
 }

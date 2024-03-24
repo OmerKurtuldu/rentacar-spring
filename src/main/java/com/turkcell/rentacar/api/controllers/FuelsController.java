@@ -1,13 +1,11 @@
 package com.turkcell.rentacar.api.controllers;
 
 import com.turkcell.rentacar.business.abstracts.FuelService;
-import com.turkcell.rentacar.business.dtos.requests.CreatedFuelRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdatedFuelRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedFuelResponse;
-import com.turkcell.rentacar.entities.concretes.Brand;
-import com.turkcell.rentacar.entities.concretes.Fuel;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.requests.update.UpdatedFuelRequest;
+import com.turkcell.rentacar.business.dtos.responses.create.CreatedFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.get.GetFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.update.UpdatedFuelResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

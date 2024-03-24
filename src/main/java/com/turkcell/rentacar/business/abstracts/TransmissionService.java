@@ -1,10 +1,10 @@
 package com.turkcell.rentacar.business.abstracts;
 
-import com.turkcell.rentacar.business.dtos.requests.CreatedTransmissionRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdatedTransmissionRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedTransmissionResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetTransmissionResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.requests.update.UpdatedTransmissionRequest;
+import com.turkcell.rentacar.business.dtos.responses.create.CreatedTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.get.GetTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.update.UpdatedTransmissionResponse;
 
 import java.util.List;
 

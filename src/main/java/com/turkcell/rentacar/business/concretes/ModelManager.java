@@ -1,12 +1,11 @@
 package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.ModelService;
-import com.turkcell.rentacar.business.dtos.requests.CreatedModelRequest;
-import com.turkcell.rentacar.business.dtos.requests.UpdatedModelRequest;
-import com.turkcell.rentacar.business.dtos.responses.CreatedFuelResponse;
-import com.turkcell.rentacar.business.dtos.responses.CreatedModelResponse;
-import com.turkcell.rentacar.business.dtos.responses.GetModelResponse;
-import com.turkcell.rentacar.business.dtos.responses.UpdatedModelResponse;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedModelRequest;
+import com.turkcell.rentacar.business.dtos.requests.update.UpdatedModelRequest;
+import com.turkcell.rentacar.business.dtos.responses.create.CreatedModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.get.GetModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.update.UpdatedModelResponse;
 import com.turkcell.rentacar.business.rules.ModelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
