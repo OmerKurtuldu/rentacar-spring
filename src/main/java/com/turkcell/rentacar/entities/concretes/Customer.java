@@ -27,15 +27,4 @@ public class Customer extends BaseEntity {
     @OneToOne(mappedBy = "customer")
     private CompanyCustomer companyCustomer;
 
-
-
-
-
-
-
-
-
-
-
-
 }
