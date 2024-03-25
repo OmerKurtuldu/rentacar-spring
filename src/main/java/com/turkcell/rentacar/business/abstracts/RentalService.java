@@ -18,6 +18,6 @@ public interface RentalService {
     void delete(int id);
 
     GetBrandResponse getById(int id);
-
+      //mhmtgks
     List<GetBrandResponse> getAll();
 }
