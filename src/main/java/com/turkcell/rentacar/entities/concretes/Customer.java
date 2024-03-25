@@ -3,13 +3,12 @@ package com.turkcell.rentacar.entities.concretes;
 
 import com.turkcell.rentacar.core.entities.BaseEntity;
 import com.turkcell.rentacar.entities.enums.CustomerType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,5 +25,8 @@ public class Customer extends BaseEntity {
 
     @OneToOne(mappedBy = "customer")
     private CompanyCustomer companyCustomer;
+
+    @OneToMany(mappedBy = "customer")
+    private List<Rental> rentals;
 
 }
