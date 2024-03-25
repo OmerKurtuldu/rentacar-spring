@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "maintenances")
 public class Maintenance extends BaseEntity {
-
     @Column(name = "dateSent")
     private LocalDateTime dateSend;
 
