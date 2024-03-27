@@ -9,6 +9,7 @@ import com.turkcell.rentacar.business.dtos.responses.get.GetFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedFuelResponse;
 import com.turkcell.rentacar.business.rules.FuelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
+import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.FuelRepository;
 import com.turkcell.rentacar.entities.concretes.Fuel;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ import java.util.List;
 public class FuelManager implements FuelService {
     private FuelRepository fuelRepository;
 
-    private ModelMapperManager modelMapperService;
+    private ModelMapperService modelMapperService;
 
     private FuelBusinessRules fuelBusinessRules;
 

@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 @Data
 public class UpdatedRentalRequest {
     @NotNull
+    int id ;
+
+    @NotNull
     private LocalDateTime startDate;
 
     @NotNull

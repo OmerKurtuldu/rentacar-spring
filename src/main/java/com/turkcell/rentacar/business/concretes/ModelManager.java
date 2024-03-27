@@ -8,6 +8,7 @@ import com.turkcell.rentacar.business.dtos.responses.get.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedModelResponse;
 import com.turkcell.rentacar.business.rules.ModelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
+import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
 import com.turkcell.rentacar.entities.concretes.Model;
 import lombok.AllArgsConstructor;
@@ -20,9 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class ModelManager implements ModelService {
-    ModelRepository modelRepository;
-    ModelMapperManager modelMapperService;
-    ModelBusinessRules modelBusinessRules;
+    private ModelRepository modelRepository;
+    private ModelMapperService modelMapperService;
+    private ModelBusinessRules modelBusinessRules;
 
     @Override
     public CreatedModelResponse add(CreatedModelRequest createdModelRequest) {

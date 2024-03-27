@@ -8,6 +8,7 @@ import com.turkcell.rentacar.business.dtos.responses.get.GetBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedBrandResponse;
 import com.turkcell.rentacar.business.rules.BrandBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
+import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.BrandRepository;
 import com.turkcell.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.List;
 public class BrandManager implements BrandService {
     private BrandRepository brandRepository;
 
-    private ModelMapperManager modelMapperService;
+    private ModelMapperService modelMapperService;
 
     private BrandBusinessRules brandBussinessRules;
 
