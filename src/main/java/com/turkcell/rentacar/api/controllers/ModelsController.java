@@ -6,6 +6,7 @@ import com.turkcell.rentacar.business.dtos.requests.create.CreatedModelRequest;
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedModelRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetModelResponse;
+import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedModelResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class ModelsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GetModelResponse> getAll() {
+    public List<GetAllModelResponse> getAll() {
         return modelService.getAll();
     }
 

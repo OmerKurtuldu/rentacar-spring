@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -28,42 +29,21 @@ public class MaintenanceManager implements MaintenanceService {
     private final MaintenanceBusinessRules maintenanceBusinessRules;
 
     @Override
-    public CreatedMaintenanceResponse add( CreatedMaintenanceRequest createMaintenanceRequest) {
-
-// burada diğer grup araba exist mi diye car business e sordurmuş onu yapalım
+    public CreatedMaintenanceResponse add(CreatedMaintenanceRequest createMaintenanceRequest) {
+        carBusinessRules.carShouldBeExist(createMaintenanceRequest.getCarId());
         maintenanceBusinessRules.checkIfCarInMaintenance(createMaintenanceRequest.getCarId());
 
-        Maintenance maintenance =this.modelMapperService.forRequest().map(createMaintenanceRequest,Maintenance.class);
-
-
+        Maintenance maintenance = this.modelMapperService.forRequest().map(createMaintenanceRequest, Maintenance.class);
         maintenance.setDateSend(LocalDateTime.now());
-
-        this.maintenanceRepository.save(maintenance);
-
+        maintenanceRepository.save(maintenance);
         CreatedMaintenanceResponse createdMaintenanceResponse =
                 this.modelMapperService.forResponse().map(maintenance, CreatedMaintenanceResponse.class);
-
         return createdMaintenanceResponse;
     }
 
     @Override
-    public List<GetAllMaintenanceResponse>  getAll() {
-        List<Maintenance> maintenanceList = this.maintenanceRepository.findAll();
-
-        return maintenanceList.stream().map(maintenance -> this.modelMapperService.forResponse().
-                map(maintenance, GetAllMaintenanceResponse.class)).collect(Collectors.toList());
-    }
-
-    @Override
-    public GetMaintenanceResponse getById(int id) {
-        Maintenance maintenance = this.maintenanceRepository.findById(id).orElse(null);
-        return modelMapperService.forResponse().map(maintenance, GetMaintenanceResponse.class);
-    }
-
-
-    @Override
     public UpdatedMaintenanceResponse update(UpdatedMaintenanceRequest updateMaintenanceRequest) {
-        maintenanceBusinessRules.checkIfMaintenanceExist(updateMaintenanceRequest.getCarId());
+        maintenanceBusinessRules.shouldBeMaintenanceExist(updateMaintenanceRequest.getCarId());
         Maintenance maintenance = this.modelMapperService.forRequest().map(updateMaintenanceRequest, Maintenance.class);
         maintenance.setDateSend(LocalDateTime.now());
 
@@ -74,8 +54,24 @@ public class MaintenanceManager implements MaintenanceService {
 
     @Override
     public void delete(int id) {
-        maintenanceBusinessRules.checkIfMaintenanceExist(id);
+        maintenanceBusinessRules.shouldBeMaintenanceExist(id);
         Maintenance maintenance = this.maintenanceRepository.findById(id).orElse(null);
         maintenance.setDeletedDate(LocalDateTime.now());
     }
+
+    @Override
+    public GetMaintenanceResponse getById(int id) {
+        maintenanceBusinessRules.shouldBeMaintenanceExist(id);
+        Optional<Maintenance> maintenance = this.maintenanceRepository.findById(id);
+        return modelMapperService.forResponse().map(maintenance, GetMaintenanceResponse.class);
+    }
+
+    @Override
+    public List<GetAllMaintenanceResponse> getAll() {
+        List<Maintenance> maintenanceList = this.maintenanceRepository.findAll();
+
+        return maintenanceList.stream().map(maintenance -> this.modelMapperService.forResponse().
+                map(maintenance, GetAllMaintenanceResponse.class)).collect(Collectors.toList());
+    }
+
 }

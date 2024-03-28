@@ -2,14 +2,14 @@ package com.turkcell.rentacar.business.concretes;
 
 import com.turkcell.rentacar.business.abstracts.PaymentService;
 import com.turkcell.rentacar.business.dtos.requests.create.CreatedPaymentRequest;
+import com.turkcell.rentacar.business.dtos.requests.create.CreatedRentalRequest;
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedPaymentRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedPaymentResponse;
-import com.turkcell.rentacar.business.dtos.responses.get.GetModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetPaymentResponse;
 import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllPaymentResponse;
-import com.turkcell.rentacar.business.dtos.responses.update.UpdatedModelResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedPaymentResponse;
 import com.turkcell.rentacar.business.rules.PaymentRules;
+import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.CustomerRepository;
 import com.turkcell.rentacar.dataAccess.abstracts.PaymentRepository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -31,6 +31,7 @@ public class PaymentManager implements PaymentService {
     ModelMapperService modelMapperService;
     CustomerRepository customerRepository;
     PaymentRules paymentRules;
+    RentalBusinessRules rentalBusinessRules;
     RentalRepository rentalRepository;
 
 
@@ -39,48 +40,47 @@ public class PaymentManager implements PaymentService {
         paymentRules.checkPayment(createdPaymentRequest);
 
         Payment payment = this.modelMapperService.forRequest().map(createdPaymentRequest, Payment.class);
-
-        paymentRepository.save(payment);
         Rental rental = rentalRepository.findById(payment.getRental().getId()).orElse(null);
+
+
+        payment.setTotalPrice(rentalBusinessRules.calculateTotalPrice(rental));
+        payment.setCreatedDate(LocalDateTime.now());
+        payment.setPaymentDate(LocalDateTime.now());
+        paymentRepository.save(payment);
 
         Customer customer = customerRepository.findById(rental.getCustomer().getId()).orElse(null);
 
         CreatedPaymentResponse createdPaymentResponse =this.modelMapperService.forResponse().map(payment, CreatedPaymentResponse.class);
-
         createdPaymentResponse.setCustomerName(paymentRules.findCustomerNameByCustomerType(customer));
-        createdPaymentResponse.setCreatedDate(LocalDateTime.now());
-        createdPaymentResponse.setPaymentDate(LocalDateTime.now());
 
         return createdPaymentResponse;
     }
 
     @Override
     public UpdatedPaymentResponse update(UpdatedPaymentRequest updatedPaymentRequest) {
-
+        paymentRules.paymentShouldBeExist(updatedPaymentRequest.getId());
 
         Payment existingPayment = modelMapperService.forRequest().map(updatedPaymentRequest, Payment.class);
+        Rental rental = rentalRepository.findById(existingPayment.getRental().getId()).orElse(null);
+
+        existingPayment.setTotalPrice(rentalBusinessRules.calculateTotalPrice(rental));
         existingPayment.setUpdatedDate(LocalDateTime.now());
+        paymentRepository.save(existingPayment);
 
         UpdatedPaymentResponse updatedPaymentResponse = modelMapperService.forResponse().map(existingPayment, UpdatedPaymentResponse.class);
-
-        Rental rental = rentalRepository.findById(existingPayment.getRental().getId()).orElse(null);
 
         Customer customer = customerRepository.findById(rental.getCustomer().getId()).orElse(null);
 
         updatedPaymentResponse.setCustomerName(paymentRules.findCustomerNameByCustomerType(customer));
-        updatedPaymentResponse.setCreatedDate(LocalDateTime.now());
-        updatedPaymentResponse.setPaymentDate(LocalDateTime.now());
-
-        paymentRepository.save(existingPayment);
+        updatedPaymentResponse.setUpdatedDate(LocalDateTime.now());
 
         return updatedPaymentResponse;
     }
 
     @Override
     public void delete(int id) {
-        Optional<Payment> foundOptionalPayment = paymentRepository.findById(id);
-        paymentRules.paymentShouldBeExist(foundOptionalPayment);
-        paymentRepository.delete(foundOptionalPayment.get());
+        paymentRules.paymentShouldBeExist(id);
+        paymentRepository.deleteById(id);
     }
 
     @Override
@@ -98,7 +98,13 @@ public class PaymentManager implements PaymentService {
     @Override
     public GetPaymentResponse getById(int id) {
         Payment payment = paymentRepository.findById(id).orElse(null);
+        Rental rental = rentalRepository.findById(payment.getRental().getId()).orElse(null);
+
+        Customer customer = customerRepository.findById(rental.getCustomer().getId()).orElse(null);
         GetPaymentResponse getPaymentResponse = this.modelMapperService.forResponse().map(payment, GetPaymentResponse.class);
+
+        getPaymentResponse.setCustomerName(paymentRules.findCustomerNameByCustomerType(customer));
+
         return getPaymentResponse;
     }
 }

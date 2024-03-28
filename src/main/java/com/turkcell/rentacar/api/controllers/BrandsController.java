@@ -5,6 +5,7 @@ import com.turkcell.rentacar.business.dtos.requests.create.CreatedBrandRequest;
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedBrandRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedBrandResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,7 @@ public class BrandsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GetBrandResponse> getAll() {
+    public List<GetAllBrandResponse> getAll() {
         return brandService.getAll();
     }
 

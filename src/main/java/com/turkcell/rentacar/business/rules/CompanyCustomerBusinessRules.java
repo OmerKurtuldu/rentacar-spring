@@ -16,11 +16,20 @@ import java.util.Optional;
 public class CompanyCustomerBusinessRules {
     private final CompanyCustomerRepository companyCustomerRepository;
 
+    public void brandNameCanNotBeDuplicated(String companyCustomerName) {
+        Optional<CompanyCustomer> companyCustomer = companyCustomerRepository.findByCompanyNameIgnoreCase(companyCustomerName);
+        if (companyCustomer.isPresent()) {
+            throw new BusinessException(CompanyCustomerMessages.companyCustomerAlreadyExists);
+        }
+    }
 
-    public void companyCustomerShouldBeExist(Optional<CompanyCustomer> companyCustomer) {
-        if (companyCustomer.isEmpty()) {
+    public void companyCustomerShouldBeExist(int companyCustomerId) {
+        Optional<CompanyCustomer> foundOptionalCompanyCustomer = companyCustomerRepository.findById(companyCustomerId);
+        if (foundOptionalCompanyCustomer.isEmpty()) {
             throw new BusinessException(CompanyCustomerMessages.companyCustomerNotFound);
         }
     }
+
+
 
 }

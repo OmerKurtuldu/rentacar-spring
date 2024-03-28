@@ -19,6 +19,7 @@ public class Payment extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "rental_id")
     private Rental rental;
+
     private double totalPrice;
     private PaymentMethod paymentMethod;
     private LocalDateTime paymentDate;

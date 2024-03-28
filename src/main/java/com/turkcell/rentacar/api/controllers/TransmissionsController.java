@@ -5,6 +5,7 @@ import com.turkcell.rentacar.business.dtos.requests.create.CreatedTransmissionRe
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedTransmissionRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetTransmissionResponse;
+import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllTransmissionResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedTransmissionResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -39,7 +40,7 @@ public class TransmissionsController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<GetTransmissionResponse> getAll() {
+    public List<GetAllTransmissionResponse> getAll() {
         return transmissionService.getAll();
     }
 

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdatedCarRequest {
+    private int id;
 
     @NotNull
     private int modelYear;

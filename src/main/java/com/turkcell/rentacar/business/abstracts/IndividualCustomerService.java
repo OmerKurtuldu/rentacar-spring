@@ -4,6 +4,7 @@ import com.turkcell.rentacar.business.dtos.requests.create.CreatedIndividualCust
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedIndividualCustomerRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedIndividualCustomerResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetIndividualCustomerResponse;
+import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllIndividualCustomerResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedIndividualCustomerResponse;
 
 import java.util.List;
@@ -13,5 +14,5 @@ public interface IndividualCustomerService {
     UpdatedIndividualCustomerResponse update(int id , UpdatedIndividualCustomerRequest updatedIndividualCustomerRequest);
     void delete(int id);
     GetIndividualCustomerResponse getById(int id);
-    List<GetIndividualCustomerResponse> getAll();
+    List<GetAllIndividualCustomerResponse> getAll();
 }

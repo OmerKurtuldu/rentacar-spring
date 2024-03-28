@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.messages;
 
 public class IndividualCustomerMessages {
-    public static String individualCustomerNotFound = "müşteri bulunamadı";
+    public static final String individualCustomerNotFound = "Individual Customer not found";
+
 }

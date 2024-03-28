@@ -16,12 +16,16 @@ import com.turkcell.rentacar.dataAccess.abstracts.IndividualCustomerRepository;
 import com.turkcell.rentacar.entities.concretes.Customer;
 import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 import com.turkcell.rentacar.entities.enums.CustomerType;
+import lombok.AllArgsConstructor;
 import org.modelmapper.TypeToken;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@AllArgsConstructor
 public class IndividualCustomerManager implements IndividualCustomerService {
     private  IndividualCustomerRepository individualCustomerRepository;
     private  ModelMapperService modelMapperService;
@@ -43,30 +47,30 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     @Override
     public UpdatedIndividualCustomerResponse update(int id, UpdatedIndividualCustomerRequest updatedIndividualCustomerRequest) {
         individualCustomerBusinessRules.individualCustomerIdShouldBeExist(id);
+
         IndividualCustomer individualCustomerToUpdate = modelMapperService.forRequest().map(updatedIndividualCustomerRequest, IndividualCustomer.class);
         individualCustomerToUpdate.setId(id);
         IndividualCustomer updatedIndividualCustomer = individualCustomerRepository.save(individualCustomerToUpdate);
+
         return modelMapperService.forResponse().map(updatedIndividualCustomer, UpdatedIndividualCustomerResponse.class);
     }
 
     @Override
     public void delete(int id) {
-        Optional<IndividualCustomer> foundOptionalIndividualCustomer = individualCustomerRepository.findById(id);
-        individualCustomerBusinessRules.individualCustomerShouldBeExist(foundOptionalIndividualCustomer);
-        individualCustomerRepository.delete(foundOptionalIndividualCustomer.get());
+        individualCustomerBusinessRules.individualCustomerIdShouldBeExist(id);
+        individualCustomerRepository.deleteById(id);
     }
 
     @Override
     public GetIndividualCustomerResponse getById(int id) {
-
+        individualCustomerBusinessRules.individualCustomerIdShouldBeExist(id);
         Optional<IndividualCustomer> foundOptionalIndividualCustomer = individualCustomerRepository.findById(id);
-        individualCustomerBusinessRules.individualCustomerShouldBeExist(foundOptionalIndividualCustomer);
         return modelMapperService.forResponse().map(foundOptionalIndividualCustomer.get(), GetIndividualCustomerResponse.class);
     }
 
     @Override
-    public List<GetIndividualCustomerResponse> getAll() {
-
+    public List<GetAllIndividualCustomerResponse> getAll() {
+        //TODO MERTCAN BİZE ANLATACAK
         List<IndividualCustomer> individualCustomers = individualCustomerRepository.findAll();
         return modelMapperService.forResponse().map(individualCustomers, new TypeToken<List<GetAllIndividualCustomerResponse>>() {
         }.getType());

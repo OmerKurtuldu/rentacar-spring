@@ -45,16 +45,9 @@ public class PaymentRules {
         );
 
         if(!paymentControl) throw new BusinessException(PaymentMessages.invalidCreditCard);
-
     }
 
-    public void paymentShouldBeExist(Optional<Payment> payment) {
-        if (payment.isEmpty()) {
-            throw new BusinessException(PaymentMessages.paymentNotfound);
-        }
-    }
-
-    public void paymentCustomerIdShouldBeExist(int paymentId) {
+    public void paymentShouldBeExist(int paymentId) {
         Optional<Payment> payment = paymentRepository.findById(paymentId);
         if (payment.isEmpty()) {
             throw new BusinessException(PaymentMessages.paymentNotfound);

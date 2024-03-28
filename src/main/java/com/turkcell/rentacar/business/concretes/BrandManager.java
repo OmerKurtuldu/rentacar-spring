@@ -5,6 +5,7 @@ import com.turkcell.rentacar.business.dtos.requests.create.CreatedBrandRequest;
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedBrandRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetBrandResponse;
+import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllBrandResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedBrandResponse;
 import com.turkcell.rentacar.business.rules.BrandBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service   //101
@@ -29,8 +31,8 @@ public class BrandManager implements BrandService {
 
     @Override
     public CreatedBrandResponse add(CreatedBrandRequest createBrandRequest) {
-
         brandBussinessRules.brandNameCanNotBeDuplicated(createBrandRequest.getName());
+
         Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
         brand.setCreatedDate(LocalDateTime.now());
         Brand createdBrand = brandRepository.save(brand);
@@ -43,10 +45,9 @@ public class BrandManager implements BrandService {
     @Override
     public UpdatedBrandResponse update(UpdatedBrandRequest updatedBrandRequest) {
         brandBussinessRules.brandNameCanNotBeDuplicated(updatedBrandRequest.getName());
-        Brand existingBrand = brandRepository.findById(updatedBrandRequest.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Brand not found with id: " + updatedBrandRequest.getId()));
+        brandBussinessRules.brandShouldBeExist(updatedBrandRequest.getId());
 
-        this.modelMapperService.forRequest().map(updatedBrandRequest, existingBrand);
+        Brand existingBrand = this.modelMapperService.forRequest().map(updatedBrandRequest, Brand.class);
 
         existingBrand.setUpdatedDate(LocalDateTime.now());
         Brand updatedBrand = brandRepository.save(existingBrand);
@@ -59,23 +60,25 @@ public class BrandManager implements BrandService {
 
     @Override
     public void delete(int id) {
+        brandBussinessRules.brandShouldBeExist(id);
         brandRepository.deleteById(id);
     }
 
     @Override
     public GetBrandResponse getById(int id) {
-        Brand brand = brandRepository.findById(id).orElse(null);
+        brandBussinessRules.brandShouldBeExist(id);
+        Optional<Brand> brand = brandRepository.findById(id);
         GetBrandResponse getBrandResponse = this.modelMapperService.forResponse().map(brand, GetBrandResponse.class);
         return getBrandResponse;
     }
 
     @Override
-    public List<GetBrandResponse> getAll() {
-        List<GetBrandResponse> brandResponses = new ArrayList<>();
+    public List<GetAllBrandResponse> getAll() {
+        List<GetAllBrandResponse> brandResponses = new ArrayList<>();
         List<Brand> brands = brandRepository.findAll();
         for (Brand brand : brands) {
-            GetBrandResponse brandResponse =
-                    this.modelMapperService.forResponse().map(brand, GetBrandResponse.class);
+            GetAllBrandResponse brandResponse =
+                    this.modelMapperService.forResponse().map(brand, GetAllBrandResponse.class);
             brandResponses.add(brandResponse);
         }
         return brandResponses;

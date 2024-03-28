@@ -1,6 +1,7 @@
 package com.turkcell.rentacar.business.messages;
 
 public class MaintenanceMessages {
-    public static String maintenanceAlreadyExist = "The car is already in maintenance";
+    public static final String maintenanceNotFound = "Maintenance not found";
+    public static final String maintenanceAlreadyExists = "Maintenance already exists";
 
 }

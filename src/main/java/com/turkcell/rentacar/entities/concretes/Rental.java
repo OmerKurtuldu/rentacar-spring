@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,5 +32,13 @@ public class Rental extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @ManyToMany
+    @JoinTable(name = "rental_additional_features",
+        joinColumns = @JoinColumn(name = "rental_id"),
+        inverseJoinColumns = @JoinColumn(name = "additional_feature_id")
+    )
+    private List<AdditionalFeature> additionalFeatures;
+
 
 }

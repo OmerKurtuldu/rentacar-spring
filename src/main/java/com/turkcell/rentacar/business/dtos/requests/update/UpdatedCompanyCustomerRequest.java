@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdatedCompanyCustomerRequest {
+    private int id;
+
     @NotNull
     @Size(min = 2, max = 100)
     private String companyName;

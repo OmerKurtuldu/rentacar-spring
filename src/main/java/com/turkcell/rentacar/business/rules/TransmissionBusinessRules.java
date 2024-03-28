@@ -1,8 +1,11 @@
 package com.turkcell.rentacar.business.rules;
 
+import com.turkcell.rentacar.business.messages.CompanyCustomerMessages;
+import com.turkcell.rentacar.business.messages.TransmissionMessages;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
 import com.turkcell.rentacar.dataAccess.abstracts.TransmissionRepository;
+import com.turkcell.rentacar.entities.concretes.CompanyCustomer;
 import com.turkcell.rentacar.entities.concretes.Model;
 import com.turkcell.rentacar.entities.concretes.Transmission;
 import lombok.AllArgsConstructor;
@@ -18,7 +21,15 @@ public class TransmissionBusinessRules {
     public void transmissionNameCanNotBeDuplicated(String transmissionName){
         Optional<Transmission> transmission = transmissionRepository.findByNameIgnoreCase(transmissionName);
         if(transmission.isPresent()){
-            throw new BusinessException("Transmission already exists!");
+            throw new BusinessException(TransmissionMessages.transmissionAlreadyExists);
+        }
+    }
+
+
+    public void transmissionShouldBeExist(int transmissionId) {
+        Optional<Transmission> foundOptionalTransmission = transmissionRepository.findById(transmissionId);
+        if (foundOptionalTransmission.isEmpty()) {
+            throw new BusinessException(TransmissionMessages.transmissionNotFound);
         }
     }
 }

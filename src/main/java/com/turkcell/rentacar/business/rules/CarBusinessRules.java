@@ -23,14 +23,11 @@ public class CarBusinessRules {
         }
     }
 
-
     public void carShouldBeExist(int carId) {
         Optional<Car> foundOptionalCar = carRepository.findById(carId);
         if (foundOptionalCar.isEmpty()) {
             throw new BusinessException(carNotFound);
         }
     }
-
-
 
 }

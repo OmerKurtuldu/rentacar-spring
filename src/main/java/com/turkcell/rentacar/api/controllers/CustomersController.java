@@ -31,12 +31,6 @@ public class CustomersController {
         return customerService.add(createdCustomerRequest);
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    public UpdatedCustomerResponse update(@RequestBody UpdatedCustomerRequest updatedCustomerRequest) {
-        return customerService.update(updatedCustomerRequest);
-    }
-
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetCustomerResponse getById(@PathVariable int id) {

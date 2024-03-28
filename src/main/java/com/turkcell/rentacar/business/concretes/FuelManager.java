@@ -6,6 +6,7 @@ import com.turkcell.rentacar.business.dtos.requests.create.CreatedFuelRequest;
 import com.turkcell.rentacar.business.dtos.requests.update.UpdatedFuelRequest;
 import com.turkcell.rentacar.business.dtos.responses.create.CreatedFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.get.GetFuelResponse;
+import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllFuelResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedFuelResponse;
 import com.turkcell.rentacar.business.rules.FuelBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperManager;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -43,13 +45,11 @@ public class FuelManager implements FuelService {
     @Override
     public UpdatedFuelResponse update(UpdatedFuelRequest updatedFuelRequest) {
         fuelBusinessRules.fuelNameCanNotBeDuplicated(updatedFuelRequest.getName());
-        Fuel existingFuel = fuelRepository.findById(updatedFuelRequest.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Fuel not found with id: " + updatedFuelRequest.getId()));
+        fuelBusinessRules.fuelShouldBeExist(updatedFuelRequest.getId());
 
-        this.modelMapperService.forRequest().map(updatedFuelRequest, existingFuel);
+        Fuel existingFuel = this.modelMapperService.forRequest().map(updatedFuelRequest, Fuel.class);
         existingFuel.setUpdatedDate(LocalDateTime.now());
         Fuel updatedFuel = fuelRepository.save(existingFuel);
-
         UpdatedFuelResponse updatedFuelResponse =
                 this.modelMapperService.forResponse().map(updatedFuel, UpdatedFuelResponse.class);
 
@@ -58,25 +58,27 @@ public class FuelManager implements FuelService {
 
     @Override
     public void delete(int id) {
+        fuelBusinessRules.fuelShouldBeExist(id);
         fuelRepository.deleteById(id);
     }
 
     @Override
     public GetFuelResponse getById(int id) {
-        Fuel fuel = fuelRepository.findById(id).
-                orElseThrow(() -> new IllegalArgumentException("Fuel not foun with id: " + id));
+        fuelBusinessRules.fuelShouldBeExist(id);
+        Optional<Fuel> fuel = fuelRepository.findById(id);
         GetFuelResponse getFuelResponse =
                 this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
+        fuelBusinessRules.fuelShouldBeExist(id);
         return getFuelResponse;
     }
 
     @Override
-    public List<GetFuelResponse> getAll() {
-        List<GetFuelResponse> fuelResponses = new ArrayList<>();
+    public List<GetAllFuelResponse> getAll() {
+        List<GetAllFuelResponse> fuelResponses = new ArrayList<>();
         List<Fuel> fuels = fuelRepository.findAll();
         for (Fuel fuel : fuels) {
-            GetFuelResponse fuelResponse =
-                    this.modelMapperService.forResponse().map(fuel, GetFuelResponse.class);
+            GetAllFuelResponse fuelResponse =
+                    this.modelMapperService.forResponse().map(fuel, GetAllFuelResponse.class);
             fuelResponses.add(fuelResponse);
         }
         return fuelResponses;

@@ -29,6 +29,4 @@ public class Customer extends BaseEntity {
     @OneToMany(mappedBy = "customer")
     private List<Rental> rentals;
 
-
-
 }

@@ -17,4 +17,5 @@ public class UpdatedPaymentResponse {
     private LocalDateTime createdDate;
     private int totalPrice;
     private LocalDateTime paymentDate;
+    private LocalDateTime updatedDate;
 }

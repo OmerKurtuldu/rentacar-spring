@@ -7,8 +7,11 @@ import com.turkcell.rentacar.business.dtos.responses.create.CreatedRentalRespons
 import com.turkcell.rentacar.business.dtos.responses.get.GetRentalResponse;
 import com.turkcell.rentacar.business.dtos.responses.getAll.GetAllRentalResponse;
 import com.turkcell.rentacar.business.dtos.responses.update.UpdatedRentalResponse;
+import com.turkcell.rentacar.business.rules.CarBusinessRules;
+import com.turkcell.rentacar.business.rules.CustomerBusinessRules;
 import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
+import com.turkcell.rentacar.dataAccess.abstracts.AdditionalRepository;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
 import com.turkcell.rentacar.entities.concretes.Rental;
 import lombok.AllArgsConstructor;
@@ -25,6 +28,9 @@ public class RentalManager implements RentalService {
     private RentalRepository rentalRepository;
     private ModelMapperService modelMapperService;
     private RentalBusinessRules rentalBusinessRules;
+    private CarBusinessRules carBusinessRules;
+    private CustomerBusinessRules customerBusinessRules;
+    private AdditionalRepository additionalRepository;
 
 
     @Override
@@ -40,32 +46,26 @@ public class RentalManager implements RentalService {
 
     @Override
     public UpdatedRentalResponse update(UpdatedRentalRequest updatedRentalRequest) {
-        Optional<Rental> rentalOptional = rentalRepository.findById(updatedRentalRequest.getId());
+        rentalBusinessRules.rentalShouldBeExist(updatedRentalRequest.getId());
+        carBusinessRules.carShouldBeExist(updatedRentalRequest.getCarId());
+        customerBusinessRules.customerShouldBeExist(updatedRentalRequest.getCustomerId());
 
-        if (rentalOptional.isPresent()) {
-            Rental rental = rentalOptional.get();
-            // Güncelleme isteğiyle gelen bilgileri mevcut yakıt nesnesini aktarma
-            this.modelMapperService.forRequest().map(updatedRentalRequest, rental);
-            rental.setUpdatedDate(LocalDateTime.now());
+        Rental rental = this.modelMapperService.forRequest().map(updatedRentalRequest, Rental.class);
+        rental.setUpdatedDate(LocalDateTime.now());
+        Rental updatedRental = rentalRepository.save(rental);
 
-            Rental updatedRental = rentalRepository.save(rental);
-
-            // Güncellenmiş yakıt nesnesini CreatedFuelResponse nesnesine dönüştür
-            UpdatedRentalResponse updatedRentalResponse =
-                    this.modelMapperService.forResponse().map(updatedRental, UpdatedRentalResponse.class);
-
-            return updatedRentalResponse;
-        }
-        return null;
+        return this.modelMapperService.forResponse().map(updatedRental, UpdatedRentalResponse.class);
     }
 
     @Override
     public void delete(int id) {
+        rentalBusinessRules.rentalShouldBeExist(id);
         rentalRepository.deleteById(id);
     }
 
     @Override
     public GetRentalResponse getById(int id) {
+        rentalBusinessRules.rentalShouldBeExist(id);
         Optional<Rental> rentalOptional = rentalRepository.findById(id);
         Rental rental = rentalOptional.get();
         GetRentalResponse getRentalResponse =

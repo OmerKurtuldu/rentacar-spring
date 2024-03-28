@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class UpdatedPaymentRequest {
 
+    private int id;
+
     @NotNull
     private int rentalId;
 
