@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "additional_features")
-public class AdditionalFeature  extends BaseEntity {
+public class AdditionalFeature extends BaseEntity {
 
     private String name;
 
@@ -25,6 +25,5 @@ public class AdditionalFeature  extends BaseEntity {
 
     @ManyToMany(mappedBy = "additionalFeatures")
     private List<Rental> rentals;
-
 
 }

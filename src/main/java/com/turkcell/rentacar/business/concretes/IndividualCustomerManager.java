@@ -38,10 +38,8 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     public CreatedIndividualCustomerResponse add(CreatedIndividualCustomerRequest createdIndividualCustomerRequest) {
         CreatedCustomerResponse createdCustomerResponse = customerService.add(new CreatedCustomerRequest(CustomerType.INDIVIDUAL));
         Customer customer = modelMapperService.forResponse().map(createdCustomerResponse, Customer.class);
-        int findexScore = findexService.getFindexScoreForCompanyCustomer(createdIndividualCustomerRequest.getIdentityNo());
+        int findexScore = findexService.getFindexScoreForIndividualCustomer(createdIndividualCustomerRequest.getIdentityNo());
         customer.setFindexScore(findexScore);
-
-
 
         IndividualCustomer individualCustomer = modelMapperService.forRequest().map(createdIndividualCustomerRequest, IndividualCustomer.class);
         individualCustomer.setCreatedDate(LocalDateTime.now());
@@ -53,11 +51,11 @@ public class IndividualCustomerManager implements IndividualCustomerService {
     }
 
     @Override
-    public UpdatedIndividualCustomerResponse update(int id, UpdatedIndividualCustomerRequest updatedIndividualCustomerRequest) {
-        individualCustomerBusinessRules.individualCustomerIdShouldBeExist(id);
+    public UpdatedIndividualCustomerResponse update(UpdatedIndividualCustomerRequest updatedIndividualCustomerRequest) {
+        individualCustomerBusinessRules.individualCustomerIdShouldBeExist(updatedIndividualCustomerRequest.getId());
 
         IndividualCustomer individualCustomerToUpdate = modelMapperService.forRequest().map(updatedIndividualCustomerRequest, IndividualCustomer.class);
-        individualCustomerToUpdate.setId(id);
+        individualCustomerToUpdate.setId(updatedIndividualCustomerRequest.getId());
 
         IndividualCustomer updatedIndividualCustomer = individualCustomerRepository.save(individualCustomerToUpdate);
 

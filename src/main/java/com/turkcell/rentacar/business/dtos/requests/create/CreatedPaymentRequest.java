@@ -17,7 +17,6 @@ public class CreatedPaymentRequest {
     private int rentalId;
     @NotNull
     private PaymentMethod paymentMethod;
-    private double totalPrice;
     @Size(min = 16, max = 16)
     private String cardNumber;
     private String cardHolder;

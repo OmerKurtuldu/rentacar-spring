@@ -41,9 +41,8 @@ public class PaymentManager implements PaymentService {
 
         Payment payment = this.modelMapperService.forRequest().map(createdPaymentRequest, Payment.class);
         Rental rental = rentalRepository.findById(payment.getRental().getId()).orElse(null);
-
-
         payment.setTotalPrice(rentalBusinessRules.calculateTotalPrice(rental));
+
         payment.setCreatedDate(LocalDateTime.now());
         payment.setPaymentDate(LocalDateTime.now());
         paymentRepository.save(payment);

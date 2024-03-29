@@ -14,7 +14,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CarBusinessRules {
     CarRepository carRepository;
-    private static final String carNotFound = "Car not found";
 
     public void checkCarAvailability(int carId) {
         Optional<Car> car = carRepository.findById(carId);
@@ -26,7 +25,7 @@ public class CarBusinessRules {
     public void carShouldBeExist(int carId) {
         Optional<Car> foundOptionalCar = carRepository.findById(carId);
         if (foundOptionalCar.isEmpty()) {
-            throw new BusinessException(carNotFound);
+            throw new BusinessException(CarMessages.carNotFound);
         }
     }
 

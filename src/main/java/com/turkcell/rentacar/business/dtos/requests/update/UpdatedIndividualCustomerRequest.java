@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class UpdatedIndividualCustomerRequest {
     @NotNull
+    private int id;
+
+    @NotNull
     private String firstName;
 
     @NotNull

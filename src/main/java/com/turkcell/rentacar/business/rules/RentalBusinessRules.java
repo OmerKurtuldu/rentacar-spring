@@ -55,11 +55,7 @@ public class RentalBusinessRules {
         Optional<Car> carOptional = carRepository.findById(carId);
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
         if (carOptional.get().getMinFindexScore() >= customerOptional.get().getFindexScore()){
-            throw new BusinessException(RentalMessages.FINDEX_SCORE_NOT_ENOUGH);
+            throw new BusinessException(RentalMessages.findexScoreNotEnough);
         }
-
-
-
-
     }
 }

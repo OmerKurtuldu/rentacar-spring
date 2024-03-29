@@ -23,7 +23,6 @@ public class ModelBusinessRules {
         }
     }
 
-
     public void modelIdShouldBeExist(int modelId) {
         Optional<Model> model = modelRepository.findById(modelId);
         if (model.isEmpty()) {

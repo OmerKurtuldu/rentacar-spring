@@ -25,7 +25,6 @@ public class TransmissionBusinessRules {
         }
     }
 
-
     public void transmissionShouldBeExist(int transmissionId) {
         Optional<Transmission> foundOptionalTransmission = transmissionRepository.findById(transmissionId);
         if (foundOptionalTransmission.isEmpty()) {

@@ -7,10 +7,10 @@ import java.util.Random;
 
 @Service
 @AllArgsConstructor
-public class PosServiceAdapter implements PosService{
+public class PosServiceAdapter implements PosService {
     @Override
     public boolean pay(String cardNumber, String cardHolder, String cvv, String expiryYearDate, String expiryMonthDate, double totalPrice) {
         Random random = new Random();
-        return true; //fake pos service
+        return random.nextBoolean();
     }
 }

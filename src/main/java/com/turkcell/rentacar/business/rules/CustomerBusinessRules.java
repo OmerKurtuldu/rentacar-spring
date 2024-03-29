@@ -14,8 +14,6 @@ import java.util.Optional;
 public class CustomerBusinessRules {
     private final CustomerRepository customerRepository;
 
-
-
     public void customerShouldBeExist(int customerId) {
         Optional<Customer> foundOptionalCustomer = customerRepository.findById(customerId);
         if (foundOptionalCustomer.isEmpty()) {

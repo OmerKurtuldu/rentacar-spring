@@ -13,6 +13,7 @@ import com.turkcell.rentacar.business.rules.RentalBusinessRules;
 import com.turkcell.rentacar.core.utilities.mapping.ModelMapperService;
 import com.turkcell.rentacar.dataAccess.abstracts.AdditionalRepository;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
+import com.turkcell.rentacar.entities.concretes.AdditionalFeature;
 import com.turkcell.rentacar.entities.concretes.Rental;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,11 @@ public class RentalManager implements RentalService {
         rentalBusinessRules.customerFindexScoreShouldBeEnough(createdRentalRequest.getCarId(), createdRentalRequest.getCustomerId());
 
         Rental createdRental = this.modelMapperService.forRequest().map(createdRentalRequest, Rental.class);
+
+        List<AdditionalFeature> additionalFeatures = additionalRepository.findAllById(createdRentalRequest.getAdditionalFeatures());
+        createdRental.setAdditionalFeatures(additionalFeatures);
         createdRental.setCreatedDate(LocalDateTime.now());
+
         rentalRepository.save(createdRental);
 
         CreatedRentalResponse createdRentalResponse =

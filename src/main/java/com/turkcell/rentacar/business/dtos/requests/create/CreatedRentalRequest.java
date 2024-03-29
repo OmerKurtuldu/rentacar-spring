@@ -26,6 +26,4 @@ public class CreatedRentalRequest {
     private int customerId;
 
     private List<Integer> additionalFeatures;
-
-
 }
