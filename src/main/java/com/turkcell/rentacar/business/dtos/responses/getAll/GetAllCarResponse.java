@@ -16,5 +16,6 @@ public class GetAllCarResponse {
     private double dailyPrice;
     private int modelId;
     private LocalDateTime createdDate;
+    private int minFindexScore;
 
 }

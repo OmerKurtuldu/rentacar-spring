@@ -1,14 +1,11 @@
 package com.turkcell.rentacar.business.rules;
 
-import com.turkcell.rentacar.adapter.FindexService;
 import com.turkcell.rentacar.adapter.pos.PosService;
 import com.turkcell.rentacar.business.dtos.requests.create.CreatedPaymentRequest;
-import com.turkcell.rentacar.business.messages.IndividualCustomerMessages;
 import com.turkcell.rentacar.business.messages.PaymentMessages;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.PaymentRepository;
 import com.turkcell.rentacar.entities.concretes.Customer;
-import com.turkcell.rentacar.entities.concretes.IndividualCustomer;
 import com.turkcell.rentacar.entities.concretes.Payment;
 import com.turkcell.rentacar.entities.enums.CustomerType;
 import lombok.AllArgsConstructor;

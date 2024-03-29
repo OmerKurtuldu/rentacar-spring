@@ -1,9 +1,11 @@
 package com.turkcell.rentacar.business.rules;
 
+import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.messages.CompanyCustomerMessages;
 import com.turkcell.rentacar.business.messages.RentalMessages;
 import com.turkcell.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.turkcell.rentacar.dataAccess.abstracts.CarRepository;
+import com.turkcell.rentacar.dataAccess.abstracts.CustomerRepository;
 import com.turkcell.rentacar.dataAccess.abstracts.ModelRepository;
 import com.turkcell.rentacar.dataAccess.abstracts.RentalRepository;
 import com.turkcell.rentacar.entities.concretes.*;
@@ -20,6 +22,12 @@ import java.util.Optional;
 public class RentalBusinessRules {
     RentalRepository rentalRepository;
     CarRepository carRepository;
+    CustomerService customerService;
+    CustomerRepository customerRepository;
+    CarBusinessRules carBusinessRules;
+    CustomerBusinessRules customerBusinessRules;
+
+
     public void rentalShouldBeExist(int rentalId) {
         Optional<Rental> rental = rentalRepository.findById(rentalId);
         if (rental.isEmpty()) {
@@ -39,5 +47,19 @@ public class RentalBusinessRules {
             }
         }
         return result;
+    }
+
+    public void customerFindexScoreShouldBeEnough(int carId, int customerId){
+        customerBusinessRules.customerShouldBeExist(customerId);
+        carBusinessRules.carShouldBeExist(carId);
+        Optional<Car> carOptional = carRepository.findById(carId);
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+        if (carOptional.get().getMinFindexScore() >= customerOptional.get().getFindexScore()){
+            throw new BusinessException(RentalMessages.FINDEX_SCORE_NOT_ENOUGH);
+        }
+
+
+
+
     }
 }

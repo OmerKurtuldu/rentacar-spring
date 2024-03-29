@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import com.turkcell.rentacar.adapter.findex.FindexService;
 import com.turkcell.rentacar.business.abstracts.CompanyCustomerService;
 import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.dtos.requests.create.CreatedCompanyCustomerRequest;
@@ -32,10 +33,10 @@ import java.util.Optional;
 public class CompanyCustomerManager implements CompanyCustomerService {
 
     private CompanyCustomerRepository companyCustomerRepository;
-    private CustomerRepository customerRepository;
     private ModelMapperService modelMapperService;
     private CompanyCustomerBusinessRules companyCustomerBusinessRules;
     private CustomerService customerService;
+    private FindexService findexService;
 
     /*bir müşteri oluşturma işleminin gerçekleştirilmesini ve sonucunda oluşturulan müşterinin bilgilerini içeren
     bir yanıt nesnesini döndürme işlemini sağlar. Müşteri oluşturma işlemi, istemciden gelen istek verilerinin alınması,
@@ -45,13 +46,16 @@ public class CompanyCustomerManager implements CompanyCustomerService {
     @Override
     public CreatedCompanyCustomerResponse add(CreatedCompanyCustomerRequest createdCompanyCustomerRequest) {
         companyCustomerBusinessRules.brandNameCanNotBeDuplicated(createdCompanyCustomerRequest.getCompanyName());
-
         CreatedCustomerResponse createdCustomerResponse = customerService.add(new CreatedCustomerRequest(CustomerType.COMPANY));
         Customer customer = modelMapperService.forResponse().map(createdCustomerResponse, Customer.class);
+
+        int findexScore = findexService.getFindexScoreForCompanyCustomer(createdCompanyCustomerRequest.getTaxNo());
+        customer.setFindexScore(findexScore);
 
         CompanyCustomer companyCustomer = modelMapperService.forRequest().map(createdCompanyCustomerRequest, CompanyCustomer.class);
         companyCustomer.setCreatedDate(LocalDateTime.now());
         companyCustomer.setCustomer(customer);
+
 
         CompanyCustomer createdCompanyCustomer = companyCustomerRepository.save(companyCustomer);
         return modelMapperService.forResponse().map(createdCompanyCustomer, CreatedCompanyCustomerResponse.class);

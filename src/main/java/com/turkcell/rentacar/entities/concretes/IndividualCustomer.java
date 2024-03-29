@@ -22,9 +22,6 @@ public class IndividualCustomer extends BaseEntity {
     @Column(name = "identityNo")
     private String identityNo;
 
-    @Column(name = "findexScore")
-    private double findexScore;
-
     @OneToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

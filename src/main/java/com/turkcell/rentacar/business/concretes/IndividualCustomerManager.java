@@ -1,5 +1,6 @@
 package com.turkcell.rentacar.business.concretes;
 
+import com.turkcell.rentacar.adapter.findex.FindexService;
 import com.turkcell.rentacar.business.abstracts.CustomerService;
 import com.turkcell.rentacar.business.abstracts.IndividualCustomerService;
 import com.turkcell.rentacar.business.dtos.requests.create.CreatedCustomerRequest;
@@ -27,18 +28,25 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class IndividualCustomerManager implements IndividualCustomerService {
-    private  IndividualCustomerRepository individualCustomerRepository;
-    private  ModelMapperService modelMapperService;
-    private  IndividualCustomerBusinessRules individualCustomerBusinessRules;
-    private  CustomerService customerService;
+    private IndividualCustomerRepository individualCustomerRepository;
+    private ModelMapperService modelMapperService;
+    private IndividualCustomerBusinessRules individualCustomerBusinessRules;
+    private CustomerService customerService;
+    private FindexService findexService;
+
     @Override
     public CreatedIndividualCustomerResponse add(CreatedIndividualCustomerRequest createdIndividualCustomerRequest) {
         CreatedCustomerResponse createdCustomerResponse = customerService.add(new CreatedCustomerRequest(CustomerType.INDIVIDUAL));
         Customer customer = modelMapperService.forResponse().map(createdCustomerResponse, Customer.class);
+        int findexScore = findexService.getFindexScoreForCompanyCustomer(createdIndividualCustomerRequest.getIdentityNo());
+        customer.setFindexScore(findexScore);
+
+
 
         IndividualCustomer individualCustomer = modelMapperService.forRequest().map(createdIndividualCustomerRequest, IndividualCustomer.class);
         individualCustomer.setCreatedDate(LocalDateTime.now());
         individualCustomer.setCustomer(customer);
+
 
         IndividualCustomer createdIndividualCustomer = individualCustomerRepository.save(individualCustomer);
         return modelMapperService.forResponse().map(createdIndividualCustomer, CreatedIndividualCustomerResponse.class);
@@ -50,6 +58,7 @@ public class IndividualCustomerManager implements IndividualCustomerService {
 
         IndividualCustomer individualCustomerToUpdate = modelMapperService.forRequest().map(updatedIndividualCustomerRequest, IndividualCustomer.class);
         individualCustomerToUpdate.setId(id);
+
         IndividualCustomer updatedIndividualCustomer = individualCustomerRepository.save(individualCustomerToUpdate);
 
         return modelMapperService.forResponse().map(updatedIndividualCustomer, UpdatedIndividualCustomerResponse.class);

@@ -26,4 +26,9 @@ public class CreatedCarRequest {
     @NotNull
     private int modelId;
 
+    @NotNull
+    @Min(1)
+    @Max(1900)
+    private int minFindexScore;
+
 }

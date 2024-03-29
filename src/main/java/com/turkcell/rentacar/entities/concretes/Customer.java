@@ -20,6 +20,8 @@ public class Customer extends BaseEntity {
     @Column(name = "type")
     private CustomerType type;
 
+    private int findexScore;
+
     @OneToOne(mappedBy = "customer")
     private IndividualCustomer individualCustomer;
 

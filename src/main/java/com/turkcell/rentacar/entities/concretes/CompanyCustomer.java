@@ -20,9 +20,6 @@ public class CompanyCustomer extends BaseEntity {
     @Column(name = "taxNo")
     private String taxNo;
 
-    @Column(name = "findexScore")
-    private double findexScore;
-
     @OneToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

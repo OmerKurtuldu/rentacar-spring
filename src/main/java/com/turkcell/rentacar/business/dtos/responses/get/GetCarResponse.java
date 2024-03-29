@@ -21,5 +21,6 @@ public class GetCarResponse {
     private String fuelName;
     private String transmissionName;
     private LocalDateTime createdDate;
+    private int minFindexScore;
 
 }

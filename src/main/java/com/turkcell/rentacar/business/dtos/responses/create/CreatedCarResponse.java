@@ -21,5 +21,6 @@ public class CreatedCarResponse {
     private String brandName;
     private String fuelName;
     private String transmissionName;
+    private int minFindexScore;
 
 }
